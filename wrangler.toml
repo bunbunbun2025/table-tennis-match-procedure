@@ -1,0 +1,6 @@
+name = "table-tennis-match-procedure"
+compatibility_date = "2026-11-08"
+
+# 静的ファイル（html）が入っている場所を指定
+[assets]
+directory = "./public"
