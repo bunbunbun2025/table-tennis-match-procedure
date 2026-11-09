@@ -1,11 +1,10 @@
 name = "table-tennis-matche-procedure"
 compatibility_date = "2026-11-08"
 
-# 🌟 pages専用の公開ディレクトリ指定
+# 🌟 これが必須です。アンダーバー（ _ ）で正しく記述してください
 pages_build_output_dir = "./public"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "procedure"
 database_id = "1ada25d7-8c4e-407f-b1dc-04272805786d"
-
