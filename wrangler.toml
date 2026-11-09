@@ -1,7 +1,0 @@
-name = "table-tennis-matche-procedure"
-compatibility_date = "2026-11-08"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "procedure"
-database_id = "1ada25d7-8c4e-407f-b1dc-04272805786d"
