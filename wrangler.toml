@@ -1,13 +1,8 @@
-name = "procedure"
+name = "table-tennis-match-procedure"
 compatibility_date = "2026-11-08"
 
-# 1. バックエンドAPI（プログラム）の場所を明示
-main = "./functions/api/matches.js"
-
-# 2. フロントエンド（画面HTML）の場所を明示（エラーの原因を解消）
-[assets]
-directory = "./public"
-run_worker_first = true
+# 🌟 Pages本来の自動ビルドシステムに公開フォルダーの位置を伝える
+pages build outputdir = "./public"
 
 # 3. D1データベースのバインディング連携
 [[d1_databases]]
