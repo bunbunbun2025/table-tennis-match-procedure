@@ -125,7 +125,7 @@
         async function fetchCloudData() {
             try {
                 // 💡 あなたのWorkersのURLを直接フルパスで指定して正確に通信させます
-                const res = await fetch('https://table-tennis-match-procedure.inagawa-tt-asso.workers.dev/');
+                const res = await fetch('https://workers.dev');
                 if(!res.ok) return;
                 const data = await res.json();
                 
@@ -148,7 +148,7 @@
             if(state.isUserMode) return;
             try {
                 // 💡 保存先も同様にWorkersのフルパスを指定します
-                await fetch('https://table-tennis-match-procedure.inagawa-tt-asso.workers.dev/', {
+                await fetch('https://workers.dev', {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
