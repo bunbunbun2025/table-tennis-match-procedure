@@ -2,7 +2,7 @@ name = "table-tennis-match-procedure"
 compatibility_date = "2026-11-08"
 
 # 🌟 Pages本来の自動ビルドシステムに公開フォルダーの位置を伝える
-pages build outputdir = "./public"
+pages_build_output_dir = "./public"
 
 # 3. D1データベースのバインディング連携
 [[d1_databases]]
