@@ -51,10 +51,13 @@
     </header>
 
     <div class="top-section">
+        <!-- 🔍 【修正箇所】検索ボックスをリスト選択式に変更 -->
         <div class="box search-box">
-            <h4 style="margin-bottom:8px;">🔍 選手・チーム名検索（コート検索）</h4>
-            <input type="text" id="search-input" placeholder="名前かチーム名を入力..." oninput="searchCourt()">
-            <div id="search-result" style="margin-top:10px; font-weight:bold; color:var(--primary);"></div>
+            <h4 style="margin-bottom:8px;">🔍 あなたのコート・順番待ちを検索</h4>
+            <select id="search-select" onchange="searchCourt()" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: white; font-weight: bold; color: #1e3a8a;">
+                <option value="">-- タップしてペア名（チーム・名前）を選択 --</option>
+            </select>
+            <div id="search-result" style="margin-top:10px; font-weight:bold; color:var(--primary); font-size:14px; line-height:1.5;"></div>
         </div>
         <div class="box">
             <h4 style="margin-bottom:8px;">📊 各グループの試合進行状況</h4>
@@ -63,7 +66,7 @@
     </div>
 
     <div class="venue-layout">
-        <div class="hq-desk">💻 大 会 本 ブ 席 🖥️</div>
+        <div class="hq-desk">💻 大 会 本 部 席 🖥️</div>
         <div class="courts-grid">
             <div class="court-column" id="left-column"></div>
             <div class="court-column" id="center-column"></div>
@@ -210,6 +213,7 @@
                     renderCourts();
                     updateCounters();
                     updateLeagueTables();
+                    updateSearchList();
                 }
             } catch(e) { console.error("クラウド同期エラー:", e); }
         }
@@ -257,19 +261,56 @@
             }
             return card;
         }
+        // 🌟 新機能：データベースから全ペア名を自動抽出してリスト（選択肢）を作る関数
+        function updateSearchList() {
+            const select = document.getElementById('search-select');
+            if(!select) return;
+            const currentVal = select.value; // 現在選ばれている値をキープ
 
+            let allPairs = [];
+            state.matches.forEach(m => {
+                if(m.pA && !allPairs.includes(m.pA)) allPairs.push(m.pA);
+                if(m.pB && !allPairs.includes(m.pB)) allPairs.push(m.pB);
+            });
+            allPairs.sort(); // あいうえお順に綺麗に並び替え
+
+            // セレクトボックスの中身を再構築（審判名は除外し、純粋な選手ペアのみ）
+            select.innerHTML = '<option value="">-- タップしてペア名（チーム・名前）を選択 --</option>';
+            allPairs.forEach(p => {
+                select.innerHTML += `<option value="${p}">${p}</option>`;
+            });
+            select.value = currentVal; // 値を復元
+        }
+
+        // 🌟 スマホ対応：リストから選ぶだけでコートや順番待ちを完全一致で探す関数
         function searchCourt() {
-            const q = document.getElementById('search-input').value.trim().toLowerCase();
+            const q = document.getElementById('search-select').value;
             const res = document.getElementById('search-result');
+            
+            // すべてのコートのハイライトをリセット
             document.querySelectorAll('.court-card').forEach(c => c.classList.remove('highlight'));
             if(!q) { res.innerText = ''; return; }
 
-            const m = state.matches.find(m => m.status === 'playing' && (m.pA.toLowerCase().includes(q) || m.pB.toLowerCase().includes(q)));
-            if(m) {
-                res.innerText = `🎯 試合中：${m.court}番台`;
-                document.getElementById(`court-card-${m.court}`).classList.add('highlight');
-            } else { res.innerText = '❌ 試合中コートが見つかりません'; }
+            // 1. 現在「試合中」のカードから完全一致で検索（審判は除外されるため安全）
+            const activeMatch = state.matches.find(m => m.status === 'playing' && (m.pA === q || m.pB === q));
+            if(activeMatch) {
+                res.innerHTML = `🎯 試合中：<span style="color:var(--success); font-size:18px;">${activeMatch.court}番台</span>に入ってください (${activeMatch.grp})`;
+                const card = document.getElementById(`court-card-${activeMatch.court}`);
+                if(card) card.classList.add('highlight'); // 対象コートをオレンジ色にピカピカさせる
+                return;
+            }
+
+            // 2. 次以降の「順番待ち」のスケジュールから完全一致で検索
+            const waitingMatch = state.matches.find(m => m.status === 'waiting' && (m.pA === q || m.pB === q));
+            if(waitingMatch) {
+                res.innerHTML = `⏳ 順番待ち：<span style="color:#3b82f6; font-size:16px;">${waitingMatch.court}番台の列</span>の次以降に登録されています (${waitingMatch.grp})`;
+                return;
+            }
+
+            res.innerHTML = '<span style="color:#6b7280;">❌ 現在アサインされているスケジュールがありません</span>';
         }
+
+
 
         function finishMatch(idx) {
             if(state.isUserMode) return;
@@ -435,6 +476,7 @@
             s.forEach(m => { if(!filled[m.court]) { m.status = 'playing'; filled[m.court] = true; } });
             state.matches = s; document.getElementById('group-selector').innerHTML = '';
             renderCourts(); updateCounters(); updateLeagueTables(); saveToCloud();
+            updateSearchList();
         }
 
         function importCSV(e) {
@@ -451,6 +493,7 @@
                 imported.forEach(m => { if(!filled[m.court]) { m.status = 'playing'; filled[m.court] = true; } });
                 state.matches = imported; document.getElementById('group-selector').innerHTML = '';
                 renderCourts(); updateCounters(); updateLeagueTables(); saveToCloud();
+                updateSearchList();
                 alert(`${imported.length}件の試合を読み込みました`);
             };
             r.readAsText(file, 'UTF-8');

@@ -1,6 +1,11 @@
 name = "table-tennis-match-procedure"
 compatibility_date = "2026-11-08"
 
+# 🌟 重要：バックエンドプログラムの位置をCloudflareに教える指定を追加
+main = "./functions/api/matches.js"
+
 # 静的ファイル（html）が入っている場所を指定
 [assets]
 directory = "./public"
+# 本部の認証や進行、5秒ごとの同期を正常に動かすためにAPI（Worker）を最優先で実行
+run_worker_first = true
