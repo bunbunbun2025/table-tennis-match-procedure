@@ -121,28 +121,34 @@
             setInterval(fetchCloudData, 5000);
         };
 
+        // 🌐 クラウド（お持ちのWorkersのURL）から最新データを取得する処理
         async function fetchCloudData() {
             try {
-                const res = await fetch('/functions/api/matches');
+                // 💡 あなたのWorkersのURLを直接フルパスで指定して正確に通信させます
+                const res = await fetch('https://table-tennis-match-procedure.inagawa-tt-asso.workers.dev/functions/api/matches');
                 if(!res.ok) return;
                 const data = await res.json();
+                
                 if (JSON.stringify(state.matches) !== JSON.stringify(data)) {
                     state.matches = data;
                     if(state.matches.length > 0 && !state.activeGroup) {
+                        // 最初のグループを自動選択
                         state.activeGroup = state.matches[0].grp;
                     }
                     renderCourts();
                     updateCounters();
                     updateLeagueTables();
-                    updateSearchList();
+                    if(typeof updateSearchList === 'function') updateSearchList();
                 }
             } catch(e) { console.error("クラウド同期エラー:", e); }
         }
 
+        // 🌐 クラウド（お持ちのWorkersのURL）へ現在のデータを保存する処理（本部のみ）
         async function saveToCloud() {
             if(state.isUserMode) return;
             try {
-                await fetch('/functions/api/matches', {
+                // 💡 保存先も同様にWorkersのフルパスを指定します
+                await fetch('https://table-tennis-match-procedure.inagawa-tt-asso.workers.dev/functions/api/matches', {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -150,7 +156,7 @@
                     },
                     body: JSON.stringify(state.matches)
                 });
-            } catch(e) { alert("クラウドへの保存に失敗しました。ネット環境を確認してください。"); }
+            } catch(e) { alert("クラウドへの保存に失敗しました。インターネット接続を確認してください。"); }
         }
 
         function renderCourts() {
