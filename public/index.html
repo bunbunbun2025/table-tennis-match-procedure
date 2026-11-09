@@ -39,7 +39,6 @@
         .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .btn-p { background: var(--primary); color: white; }
         
-        /* 参加者（一般ビュー）用の制御スタイル */
         body.user-mode .admin-section, body.user-mode .score-btn { display: none !important; }
     </style>
 </head>
@@ -50,140 +49,62 @@
         <div id="view-mode-badge" style="background:#e5e7eb; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">本部モード</div>
     </header>
 
-    <div class="top-section">
-        <!-- 🔍 【修正】検索ボックスをリスト選択式に変更 -->
-        <div class="box search-box">
-            <h4 style="margin-bottom:8px;">🔍 あなたのコート・順番待ちを検索</h4>
-            <select id="search-select" onchange="searchCourt()" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: white; font-weight: bold; color: #1e3a8a;">
-                <option value="">-- タップしてペア名（チーム・名前）を選択 --</option>
-            </select>
-            <div id="search-result" style="margin-top:10px; font-weight:bold; color:var(--primary); font-size:14px; line-height:1.5;"></div>
-        </div>
-        <div class="box">
-            <h4 style="margin-bottom:8px;">📊 各グループの試合進行状況</h4>
-            <div class="counter-grid" id="progress-counters"></div>
-        </div>
-    </div>
-
-    <div class="venue-layout">
-        <div class="hq-desk">💻 大 会 本 部 席 🖥️</div>
-        <div class="courts-grid">
-            <div class="court-column" id="left-column"></div>
-            <div class="court-column" id="center-column"></div>
-            <div class="court-column" id="right-column"></div>
-        </div>
-    </div>
-
-    <div class="league-section">
-        <div class="selector" id="group-selector"></div>
-        <div class="tables-container">
-            <div style="overflow-x: auto;">
-                <h4 style="margin-bottom:10px;" id="matrix-title">総当たり星取表</h4>
-                <table id="matrix-table"></table>
+    <div class="main-container">
+        <div class="top-section">
+            <!-- 🔍 【修正箇所】検索ボックスをリスト選択式に変更 -->
+            <div class="box search-box">
+                <h4 style="margin-bottom:8px;">🔍 あなたのコート・順番待ちを検索</h4>
+                <select id="search-select" onchange="searchCourt()" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: white; font-weight: bold; color: #1e3a8a;">
+                    <option value="">-- タップしてペア名（チーム・名前）を選択 --</option>
+                </select>
+                <div id="search-result" style="margin-top:10px; font-weight:bold; color:var(--primary); font-size:14px; line-height:1.5;"></div>
             </div>
-            <div>
-                <h4 style="margin-bottom:10px;">🏆 リアルタイム順位表</h4>
-                <table id="ranking-table"></table>
-                <div id="janken-container"></div>
+            <div class="box">
+                <h4 style="margin-bottom:8px;">📊 各グループの試合進行状況</h4>
+                <div class="counter-grid" id="progress-counters"></div>
             </div>
         </div>
-    </div>
 
-    <div class="admin-section">
-        <strong>⚙️ 管理者メニュー (データ一括管理)</strong>
-        <div id="auth-zone" style="margin-top:10px;">
-            <input type="password" id="admin-pass" placeholder="パスワード(admin123)">
-            <button class="btn btn-p" onclick="checkPass()">認証</button>
-        </div>
-        <div class="admin-tools" id="tools-zone">
-            <div style="background:#e5e7eb; padding:6px 12px; border-radius:4px; font-weight:bold; display:inline-block; font-size:13px; position:relative; overflow:hidden;">
-                CSVインポート
-                <input type="file" id="csv-file" accept=".csv" onchange="importCSV(event)" style="position:absolute; left:0; top:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+        <div class="venue-layout">
+            <div class="hq-desk">💻 大 会 本 ブ 席 🖥️</div>
+            <div class="courts-grid">
+                <div class="court-column" id="left-column"></div>
+                <div class="court-column" id="center-column"></div>
+                <div class="court-column" id="right-column"></div>
             </div>
-            <button class="btn" style="background:#10b981; color:white;" onclick="exportCSV()">データをCSVエクスポート</button>
-            <button class="btn" style="background:#f3f4f6; color:#4b5563; border:1px solid #ccc;" onclick="loadSample()">サンプルデータを再ロード</button>
+        </div>
+
+        <div class="league-section">
+            <div class="selector" id="group-selector"></div>
+            <div class="tables-container">
+                <div style="overflow-x: auto;">
+                    <h4 style="margin-bottom:10px;" id="matrix-title">総当たり星取表</h4>
+                    <table id="matrix-table"></table>
+                </div>
+                <div>
+                    <h4 style="margin-bottom:10px;">🏆 リアルタイム順位表</h4>
+                    <table id="ranking-table"></table>
+                    <div id="janken-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <strong>⚙️ 管理者メニュー (データ一括管理)</strong>
+            <div id="auth-zone" style="margin-top:10px;">
+                <input type="password" id="admin-pass" placeholder="パスワード(admin123)">
+                <button class="btn btn-p" onclick="checkPass()">認証</button>
+            </div>
+            <div class="admin-tools" id="tools-zone">
+                <div style="background:#e5e7eb; padding:6px 12px; border-radius:4px; font-weight:bold; display:inline-block; font-size:13px; position:relative; overflow:hidden;">
+                    CSVインポート
+                    <input type="file" id="csv-file" accept=".csv" onchange="importCSV(event)" style="position:absolute; left:0; top:0; opacity:0; cursor:pointer; width:100%; height:100%;">
+                </div>
+                <button class="btn" style="background:#10b981; color:white;" onclick="exportCSV()">データをCSVエクスポート</button>
+                <button class="btn" style="background:#f3f4f6; color:#4b5563; border:1px solid #ccc;" onclick="loadSample()">サンプルデータを再ロード</button>
+            </div>
         </div>
     </div>
-
-    <script>
-        let state = { matches: [], activeGroup: '', isUserMode: false, adminPassword: '' };
-
-        window.onload = function() {
-            // URLの末尾に「?view=user」が付いているかチェックして参加者モードを自動判定
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('view') === 'user') {
-                state.isUserMode = true;
-                document.body.classList.add('user-mode');
-                document.getElementById('view-mode-badge').innerText = "📢 観戦・選手用画面";
-                document.getElementById('view-mode-badge').style.background = "#d1fae5";
-                document.getElementById('view-mode-badge').style.color = "#065f46";
-            }
-            
-            // クラウドから最新データをロード
-            fetchCloudData();
-            // 参加者向けに5秒ごとにデータを自動で裏側で同期更新する（リロード不要にする）
-            setInterval(fetchCloudData, 5000);
-        };
-
-        // 🌐 クラウド（D1）からデータを取得する処理
-        async function fetchCloudData() {
-            try {
-                const res = await fetch('/functions/api/matches'); // Pages関数(API)を呼び出し
-                if(!res.ok) return;
-                const data = await res.json();
-                
-                // 初回読み込み、またはデータに変更があった時のみ画面を更新
-                if (JSON.stringify(state.matches) !== JSON.stringify(data)) {
-                    state.matches = data;
-                    if(state.matches.length > 0 && !state.activeGroup) {
-                        // 最初のグループを自動選択
-                        state.activeGroup = [...new Set(state.matches.map(m => m.grp))];
-                    }
-                    renderCourts();
-                    updateCounters();
-                    updateLeagueTables();
-                }
-            } catch(e) { console.error("クラウド同期エラー:", e); }
-        }
-
-        // 🌐 クラウド（D1）へ現在のデータを保存する処理（本部のみ）
-        async function saveToCloud() {
-            if(state.isUserMode) return;
-            try {
-                await fetch('/functions/api/matches', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-Admin-Password': state.adminPassword || 'admin123'
-                    },
-                    body: JSON.stringify(state.matches)
-                });
-            } catch(e) { alert("クラウドへの保存に失敗しました。インターネット接続を確認してください。"); }
-        }
-
-        function renderCourts() {
-            const rightCol = document.getElementById('right-column');
-            const centerCol = document.getElementById('center-column');
-            const leftCol = document.getElementById('left-column');
-            if(!rightCol || !centerCol || !leftCol) return;
-            rightCol.innerHTML = ''; centerCol.innerHTML = ''; leftCol.innerHTML = '';
-
-            for(let i = 13; i <= 18; i++) { leftCol.appendChild(createCourt(i)); }
-            for(let i = 12; i >= 7; i--) { centerCol.appendChild(createCourt(i)); }
-            for(let i = 1; i <= 6; i++) { rightCol.appendChild(createCourt(i)); }
-        }
-
-        function createCourt(num) {
-            const card = document.createElement('div');
-            card.className = 'court-card'; card.id = `court-card-${num}`;
-            const m = state.matches.find(m => m.court == num && m.status === 'playing');
-            
-            // 参加者モードなら星取表タップでの訂正を無効化するスタイル制御
-            const clickAttr = state.isUserMode ? '' : `onclick="finishMatch(${state.matches.indexOf(m)})"`;
-
-            if(m) {
-                card.className = 'court-card active';
-                card.innerHTML = `<span class="court-num">${num}番台</span>
     <script>
         let state = { matches: [], activeGroup: '', isUserMode: false, adminPassword: '' };
 
@@ -261,6 +182,7 @@
             }
             return card;
         }
+
         // 🌟 新機能：データベースから全ペア名を自動抽出してリスト（選択肢）を作る関数
         function updateSearchList() {
             const select = document.getElementById('search-select');
@@ -309,8 +231,6 @@
 
             res.innerHTML = '<span style="color:#6b7280;">❌ 現在アサインされているスケジュールがありません</span>';
         }
-
-
 
         function finishMatch(idx) {
             if(state.isUserMode) return;
