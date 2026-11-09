@@ -1,5 +1,8 @@
 name = "table-tennis-matche-procedure"
-compatibility_date = "2026-11-09"
+compatibility_date = "2026-11-08"
+
+# 🌟 アンダーバーがスペースになっていないか最終確認してください
+pages_build_output_dir = "./public"
 
 [[d1_databases]]
 binding = "DB"
