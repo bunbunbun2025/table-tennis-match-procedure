@@ -1,5 +1,6 @@
 name = "table-tennis-app"
 compatibility_date = "2026-11-08"
+main = "functions/api/matches.js"
 
 # 🌟 Pages Functions（API）がデータベースと通信するために必須のバインディング設定
 [[d1_databases]]
