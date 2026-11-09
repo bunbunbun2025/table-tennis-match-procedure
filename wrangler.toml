@@ -5,5 +5,5 @@ main = "functions/api/matches.js"
 # 🌟 Pages Functions（API）がデータベースと通信するために必須のバインディング設定
 [[d1_databases]]
 binding = "DB"  # プログラム内の「DB」という名前に結びつけます
-database_name = "matches"  # あなたが作成したD1データベース名
+database_name = "procedure"  # あなたが作成したD1データベース名
 database_id = "1ada25d7-8c4e-407f-b1dc-04272805786d"  # ※CloudflareのD1画面に表示されている英数字のID
