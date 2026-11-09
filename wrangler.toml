@@ -1,9 +1,6 @@
 name = "table-tennis-matche-procedure"
 compatibility_date = "2026-11-08"
 
-# 🌟 これが必須です。アンダーバー（ _ ）で正しく記述してください
-pages_build_output_dir = "./public"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "procedure"
