@@ -1,4 +1,4 @@
-name = "table-tennis-app"
+name = "procedure"
 compatibility_date = "2026-11-08"
 main = "functions/api/matches.js"
 
